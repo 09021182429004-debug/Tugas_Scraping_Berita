@@ -13,7 +13,6 @@ try:
         soup = BeautifulSoup(response.text, "html.parser")
         data_berita = []
 
-        # Mencari elemen artikel berita
         articles = soup.find_all("article")
         if not articles:
             articles = soup.find_all("div", class_=lambda x: x and ("post" in x or "card" in x or "article" in x))
@@ -35,7 +34,6 @@ try:
                         "Link": link
                     })
 
-        # Cara cadangan jika selector di atas kosong
         if not data_berita:
             for h3 in soup.find_all("h3"):
                 a_tag = h3.find("a")
@@ -47,7 +45,6 @@ try:
                     })
 
         if data_berita:
-            # Ambil TEPAT 5 berita saja
             df = pd.DataFrame(data_berita).drop_duplicates(subset=["Judul"]).head(5)
             
             nama_file = "hasil_scraping_berita.csv"
